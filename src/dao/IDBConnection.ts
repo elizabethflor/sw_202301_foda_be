@@ -1,3 +1,3 @@
-export interface IDBConnection{
-    getConnection() : Promise<any>
+export interface IDBConnection {
+  getConnection() : Promise<any>
 }
