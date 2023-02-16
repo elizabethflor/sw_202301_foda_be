@@ -1,4 +1,4 @@
-import { MongoDAOBase } from "@dao/mongoDAOBase";
+import { MongoDAOBase } from "@server/dao/MongoDAOBase";
 import { IDBConnection } from "@dao/IDBConnection";
 import { IEmpresa } from "./IEmpresas";
 

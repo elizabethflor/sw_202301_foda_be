@@ -1,10 +1,9 @@
-//manejar todas las rutas que tienen que ver con la empresa
 import express from 'express';
 const router = express.Router();
 import { EmpresasDao } from '@dao/models/Empresas/EmpresasDao';
 import { MongoDBConn } from '@dao/MongoDBConn';
 import { IEmpresa } from '@dao/models/Empresas/IEmpresas';
-import { Empresas } from '@libs/Empresas/Empresas';
+import { Empresas } from '@libs/Empresas/Empresas';
 const empresasDao = new EmpresasDao(MongoDBConn);
 let empresasModel:Empresas;
 empresasDao.init().then(()=>{
@@ -82,16 +81,17 @@ router.put('/upd/:id', async (req, res) => {
 
   if (await empresasModel.update(id, UpdateEmpresa)) {
     return res
-      .status(404)
-      .json(
-        {
-          "error": "Error al actualizar Empresa"
-        }
-
-        );
+      .status(200)
+      .json({"updated": true});
+  }
+  return res
+    .status(404)
+    .json(
+      {
+        "error": "Error al actualizar Empresa"
       }
+    );
 });
-
 
 router.delete('/del/:id', async (req, res)=>{
   const {id } = req.params;
@@ -100,11 +100,9 @@ router.delete('/del/:id', async (req, res)=>{
   }
   return res.status(404).json({"error":"No se pudo eliminar Empresa"});
 });
-
-/*router.get('/', function(_req,res){
-
-});*/
-
-
+/*
+router.get('/', function(_req, res){
+});
+ */
 
 export default router;
