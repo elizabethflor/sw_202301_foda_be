@@ -1,8 +1,8 @@
 import express from 'express';
 const router  = express.Router();
 
-import empresasRouter from './empresas/empresas';
-import usuariosRouter from './usuarios/usuarios';
+//import empresasRouter from './empresas/empresas';
+//import usuariosRouter from './usuarios/usuarios';
 
 //rest api
 //internet -> http -> rest api -> db
@@ -27,12 +27,18 @@ router.get('/', (_req, res) => {
     res.json(jsonResp);
  });
 
- router.use('/empresas', empresasRouter);
- router.use('/usuarios', usuariosRouter);
+ //router.use('/empresas', empresasRouter);
+ //router.use('/usuarios', usuariosRouter);
  //router.get
  //router.post
  //router.put
  //router.delete
  //router.use
+import empresasRouter from './empresas/empresas';
+router.use('/empresas', empresasRouter);
+
+import fodaRouter from './foda/foda';
+router.use('/foda', fodaRouter);
+ //router.get  router.post router.put router.delete  router.use
 
 export default router;

@@ -1,6 +1,6 @@
 import {MongoDAOBase} from '@dao/MongoDAOBase';
 import { IDBConnection } from '@dao/IDBConnection';
-import { IFoda, DefaultFoda } from './IFoda';
+import { IFoda, DefaultFoda } from './IFoda'; 
 import { IDataAccessObject } from '@dao/IDataAccessObject';
 import { ObjectId } from 'mongodb';
 
@@ -10,7 +10,7 @@ export class FodaDao extends MongoDAOBase<IFoda> {
       super("foda", conexion);
       this.empresaDao = empresaDao;
   }
-  public async create(foda:IFoda) {
+  public async create(foda:Partial<IFoda>) {
     const { empresa: { id } } = foda;
     if( !ObjectId.isValid(id)){
       throw Error("Empresa Object Id not Valid")
@@ -23,5 +23,13 @@ export class FodaDao extends MongoDAOBase<IFoda> {
       ...{ createdAt: new Date(), updatedAt: new Date()}
     };
     return super.create(newFoda);
+  }
+  public async updateCounter( fodaId: string|ObjectId, type: 'F'|'D'|'A'|'O') {
+    let oFodaId = typeof fodaId == 'string' ? new ObjectId(fodaId): fodaId;
+    let filter = {_id: oFodaId};
+    let updCmd = {"$inc":{"entradas" :1}, "$set": {"updatedAt": new Date()}}
+    updCmd["$inc"][`${type}cantidad`] = 1;
+    console.log('updateCounter:', {updCmd, oFodaId});
+    return super.rawUpdate(filter, updCmd);
   }
 }
