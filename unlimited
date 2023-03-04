@@ -1,0 +1,14 @@
+var docs = [];
+for (var i = 0; i < 20; i++){
+    var doc = {
+        nombre: 'sujeto' + (i +1),
+        edad: Math.ceil(Math.random()* (40 - 21) + 21),
+        tag: ['Grupo1 - 0%','Grupo2 - 2%','Grupo3 - 4%','Grupo4 - 12%', 'Grupo5 - 20%'] [Math.floor(Math.random() * 5)],
+        tiempoSegundos: Math.ceil(Math.random()* (80 - 0) + 0),
+        fecha: new Date ().getTime () + Math. floor (Math. random () * 100 * (1000 *60*60*24))
+    }
+
+    docs.push(doc);
+}
+
+db.bebidas.insertMany(docs)
