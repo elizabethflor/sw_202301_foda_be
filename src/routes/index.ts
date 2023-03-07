@@ -1,6 +1,8 @@
 import express from 'express';
 const router  = express.Router();
 
+import { validateKeyMiddleWare } from './middlewares/apiKeyValidator'
+
 //import empresasRouter from './empresas/empresas';
 //import usuariosRouter from './usuarios/usuarios';
 
@@ -34,11 +36,18 @@ router.get('/', (_req, res) => {
  //router.put
  //router.delete
  //router.use
+
+ //Aplicar Middlewares: intersectar la peticion
+
+
 import empresasRouter from './empresas/empresas';
-router.use('/empresas', empresasRouter);
+router.use('/empresas', validateKeyMiddleWare, empresasRouter);
 
 import fodaRouter from './foda/foda';
-router.use('/foda', fodaRouter);
+router.use('/foda', validateKeyMiddleWare, fodaRouter);
+
+import usuariosRouter from './usuarios/usuarios';
+router.use('/usuarios', usuariosRouter);
  //router.get  router.post router.put router.delete  router.use
 
 export default router;

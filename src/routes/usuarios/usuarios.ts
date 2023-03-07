@@ -1,14 +1,15 @@
 import express from 'express';
 const router = express.Router();
 
-import { Usuarios, IUsuario} from '@libs/Usuarios/Usuarios';
-const usuariosModel = new Usuarios();
+import { UsuariosDao } from '@dao/models/Usuarios/UsuariosDao';
+import { MongoDBConn } from '@dao/MongoDBConn';
+import { IUsuario } from "@dao/models/Usuarios/IUsuarios";
+import { Usuarios } from '@libs/Usuarios/Usuarios';
 
-usuariosModel.add({
-    codigo: '',
-    nombre: 'idalia',
-    correo: 'ie_floresv@unicah.edu',
-    password: '123456'
+const usuariosDao = new UsuariosDao(MongoDBConn);
+let usuariosModel: Usuarios;
+usuariosDao.init().then(() =>{
+    usuariosModel = new Usuarios(usuariosDao);
 });
 
 router.get('/', (_req,res) =>{
@@ -22,13 +23,14 @@ router.get('/', (_req,res) =>{
     res.status(200).json(jsonUrls);
 });
 
-router.get('/all',(_req,res) =>{
-    res.status(200).json(usuariosModel.getAll());
+router.get('/all', async (_req,res) =>{
+    console.log(usuariosModel.getAll());
+    res.status(200).json(await usuariosModel.getAll());
 });
 
-router.get('/byid/:id', (req,res) =>{
+router.get('/byid/:id', async (req,res) =>{
     const {id: codigo} = req.params;
-    const usuario = usuariosModel.getById(codigo);
+    const usuario = await usuariosModel.getById(codigo);
 
     if(usuario){
         return res.status(200).json(usuario);
@@ -37,53 +39,70 @@ router.get('/byid/:id', (req,res) =>{
     return res.status(404).json({"error": "No se encontró usuario"});
 });
 
-router.post('/new', (req,res) =>{
+router.post('/new', async (req,res) =>{
     const {
+        codigo = "NA",
         nombre= "elizabeth",
         correo= "elizabeth_vz@unicah.edu",
         password= "7891002"
     } = req.body;
 
     const newUser: IUsuario = {
-        codigo: "",
+        codigo,
         nombre,
         correo,
         password
     };
 
-    if(usuariosModel.add(newUser)){
-        res.status(200).json({"created": true});
+    if(await usuariosModel.add(newUser)) {
+        return res.status(200).json({"created": true});
     }
 
-    return res.status(404).json({"error": "Error al agregar un nuevo usuario"})
+    return res.status(404).json(
+        {"error": "Error al agregar un nuevo usuario"}
+    );
 });
 
-router.put('/upd/:id', (req,res) =>{
+router.put('/upd/:id', async (req,res) =>{
     const { id } = req.params;
     const {
-        nombre= "elizabeth",
-        correo= "elizabeth_vz@unicah.edu",
-        password= "7891002"
+        nombre= "----NotRecieved------",
+        correo= "----NotRecieved------",
+        password= "----NotRecieved------",
+        codigo = ""
     } = req.body;
 
+    if (
+        nombre === "----NotRecieved------"
+        || correo === "----NotRecieved------"
+      ) {
+        return res.status(403).json({"error":"Debe venir el nombre y correo correctos"});
+      }
+
     const UpdateUsuario: IUsuario ={
-        codigo: id,
+        codigo,
         nombre,
         correo,
         password
     }
 
-    if(usuariosModel.updated(UpdateUsuario)){
-        res.status(200).json({"updated": true});
+    if(await usuariosModel.updated(id, UpdateUsuario)){
+        return res
+        .status(200)
+        .json({"updated": true});
     }
 
-    return res.status(404).json({"error": "Error al actualizar usuarios"});
+    return res
+    .status(404)
+    .json(
+        {"error": "Error al actualizar usuarios"}
+        );
 });
 
-router.delete('/del/:id', (req,res) =>{
-    const {id: codigo} = req.params;
+router.delete('/del/:id', async (req,res) =>{
+    const {id } = req.params;
 
-    if(usuariosModel.delete(codigo)){
+    if(await usuariosModel.delete(id)){
         return res.status(200).json({"deleted": true});
     }
 

@@ -8,7 +8,7 @@ export enum IFodaEstados {
   Canceled = "C"
 }
 export interface IFoda extends IAuditable {
-  _id?: ObjectId | string;
+  _id?: ObjectId | string; // | es una union, puedo tener un objectid o string como id  
   nombre: string;
   owner : {
     id: ObjectId | string,
