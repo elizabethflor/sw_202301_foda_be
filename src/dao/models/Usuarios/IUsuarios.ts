@@ -7,3 +7,10 @@ export interface IUsuario{
     created?: Date;
     ultimoAcceso?: Date;
 }
+
+export const DefaultUser: IUsuario ={
+    codigo: "",
+    nombre: "",
+    correo: "",
+    password: ""
+}

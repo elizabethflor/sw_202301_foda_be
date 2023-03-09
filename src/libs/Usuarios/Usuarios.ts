@@ -1,5 +1,6 @@
 import { IUsuario } from "@dao/models/Usuarios/IUsuarios";
 import { IDataAccessObject } from "@server/dao/IDataAccessObject";
+import { Security } from "@server/utils/Security";
 
 export class Usuarios {
     //private usuarios: IUsuario[];
@@ -36,5 +37,15 @@ export class Usuarios {
 
     delete(id: string) {
         return this.dao.delete(id);
+    }
+
+    public async loginUser(email:string, password:string){
+        try {
+           // const dbUser = this.
+        } catch (err) {
+            console.error(err);
+            return null;
+            
+        }
     }
 }
