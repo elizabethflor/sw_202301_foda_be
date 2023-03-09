@@ -1,4 +1,4 @@
-import express from 'express';
+/*import express from 'express';
 const router = express.Router();
 
 import { UsuariosDao } from '@dao/models/Usuarios/UsuariosDao';
@@ -109,4 +109,4 @@ router.delete('/del/:id', async (req,res) =>{
     return res.status(404).json({"error": "No se pudo eliminar usuario"});
 });
 
-export default router;
+export default router;*/

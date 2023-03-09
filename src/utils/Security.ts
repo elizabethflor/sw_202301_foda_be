@@ -1,12 +1,9 @@
-import * as bycrypt from 'bcryptjs'
-
-
+import * as bcrypt from 'bcryptjs';
 export class Security {
-    public static encondePassword(rawPassword: string){
-        return bycrypt.hashSync(rawPassword, 10);
-
-    }
-    public static verifyPasswor(rawPassword: string, encondePassword:string){
-        return bycrypt.compareSync( rawPassword, encondePassword);
-    }
+  public static encodePassword( rawPassword : string){
+    return bcrypt.hashSync(rawPassword, 10);
+  }
+  public static verifyPassword( rawPassword: string, encodePassword:string){
+    return bcrypt.compareSync( rawPassword, encodePassword);
+  }
 }
