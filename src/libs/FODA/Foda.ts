@@ -1,18 +1,17 @@
 import { IDataAccessObject } from "@dao/IDataAccessObject";
-import { FodaDao } from "@server/dao/models/FODA/FodaDao";
+import { FodaDao } from "@dao/models/FODA/FodaDao";
 import { IFoda, IFodaEstados } from "@dao/models/FODA/IFoda";
 import { ObjectId } from "mongodb";
 
 export class Foda {
   private fodaDao: FodaDao;
-  private empresaDao: IDataAccessObject;
-  constructor(foda: IDataAccessObject, empresa: IDataAccessObject) {
+  constructor(foda: IDataAccessObject) {
     this.fodaDao = foda as FodaDao;
-    this.empresaDao = empresa;
+
   }
   public async newFoda(nombre: string, empresaId: string) {
     try {
-      const newFoda = { ...{ empresa: { id: empresaId }, nombre } };
+      const newFoda = {...{ empresa: { id: empresaId }, nombre } };
       const result = await this.fodaDao.create(newFoda);
       console.log('newFoda result:', result);
       const rt = await this.fodaDao.findByFilter({ _id: result?.insertedId });

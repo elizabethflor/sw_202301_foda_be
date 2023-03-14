@@ -22,7 +22,7 @@ export class FodaDao extends MongoDAOBase<IFoda> {
       ...{empresa:{id:_id, nombre}},
       ...{ createdAt: new Date(), updatedAt: new Date()}
     };
-    return super.create(newFoda);
+    return super.create(newFoda); 
   }
   public async updateCounter( fodaId: string|ObjectId, type: 'F'|'D'|'A'|'O') {
     let oFodaId = typeof fodaId == 'string' ? new ObjectId(fodaId): fodaId;

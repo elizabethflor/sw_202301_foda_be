@@ -41,13 +41,13 @@ router.get('/', (_req, res) => {
  //Aplicar Middlewares: intersectar la peticion
 
  import securityRoutes from './security/security';
- router.use('/security', securityRoutes);
+ router.use('/security', validateKeyMiddleWare, securityRoutes);
 
 import empresasRouter from './empresas/empresas';
-router.use('/empresas', validateKeyMiddleWare, validateJwtMiddleWare, empresasRouter);
+router.use('/empresas', validateKeyMiddleWare, /*validateJwtMiddleWare*/ empresasRouter);
 
 import fodaRouter from './foda/foda';
-router.use('/foda', validateKeyMiddleWare, validateJwtMiddleWare, fodaRouter);
+router.use('/foda', validateKeyMiddleWare, /*validateJwtMiddleWare*/ fodaRouter);
 
 //import usuariosRouter from './usuarios/usuarios';
 //router.use('/usuarios', usuariosRouter);

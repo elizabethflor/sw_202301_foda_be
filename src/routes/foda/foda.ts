@@ -2,18 +2,15 @@ import express from 'express';
 import { EmpresasDao } from '@dao/models/Empresas/EmpresasDao';
 import { FodaDao } from '@dao/models/FODA/FodaDao';
 import { MongoDBConn } from '@dao/MongoDBConn';
-import {Foda} from '@libs/FODA/Foda';
-import { Empresas } from '@libs/Empresas/Empresas';
+import { Foda } from '@libs/FODA/Foda';
 
 const empresasDao = new EmpresasDao(MongoDBConn);
 let fodaDao;
-let empresasModel:Empresas;
 let fodaModel:Foda;
 empresasDao.init().then(()=>{
-  empresasModel = new Empresas(empresasDao);
   fodaDao = new FodaDao(MongoDBConn, empresasDao);
   fodaDao.init().then(()=>{
-    fodaModel = new Foda(fodaDao, empresasDao);
+    fodaModel = new Foda(fodaDao);
   });
 });
 const router = express.Router();
